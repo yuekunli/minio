@@ -19,6 +19,7 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"runtime"
@@ -1466,7 +1467,22 @@ func getMinioProcMetrics() *MetricsGroup {
 	}
 	mg.RegisterRead(func(ctx context.Context) (metrics []Metric) {
 		if runtime.GOOS == "windows" {
-			return nil
+			//return nil
+
+			metrics = make([]Metric, 0, 20)
+
+			startTime, _, _, _, ok := wrappers.GetProcessTimes(wrappers.GetCurrentProcess())
+			if !ok {
+				logger.LogIf(ctx, errors.New("Fail to get Win32 process info"))
+			}
+			if startTime.Uint64() > 0 {
+				metrics = append(metrics,
+					Metric{
+						Description: getMinIOProcessStartTimeMD(),
+						Value:       float64(startTime.Time().Unix()),
+					})
+			}
+			return
 		}
 
 		p, err := procfs.Self()

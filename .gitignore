@@ -43,3 +43,10 @@ docs/debugging/inspect/inspect
 docs/debugging/pprofgoparser/pprofgoparser
 docs/debugging/reorder-disks/reorder-disks
 docs/debugging/populate-hard-links/populate-hardlinks
+
+minio-service.err.log
+minio-service.exe
+minio-service.out.log
+minio-service.wrapper.log
+minio-service.xml
+minio.exe
